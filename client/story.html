@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Story - Crowd Scribe - A Real-Time Collaborative Story Game</title>
+    <link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/default.css" type="text/css" media="screen" />
+</head>
+<body>
+    <div id="container">
+        
+        <div id="header">
+            <a href="#">Crowd Scribe<span>A Real-Time Collaborative Story Game</span></a>
+	    <ul id="nav">
+		<li><a href="index.html">Home</a></li>
+		<li><a href="new.html">Start a Story</a></li>
+		<li><a href="browse.html">Join a Story</a></li>
+		<li><a href="register.html">Register</a></li>
+		<li><a href="login.html">Login</a></li>
+	    </ul>
+        </div>
+        
+        <div id="content">
+            <h1>Story Name</h1>
+	    
+	    <div id="story">
+		<h2>The story so far...</h2>
+	    </div>
+	    
+	    <div id="current-round">
+		<h2>Round 3 <span>:60</span></h2>
+		<div id="entry">
+		    <form>
+			<textarea name="entry"></textarea>
+			<button type="submit">Submit!</button>
+		    </form>
+		</div>
+		
+		<div id="entries">
+		    <ul>
+			<li><span>Such a polite knock. A bit like Mr Marsden from the Pru used when he came to collect his money every month.</span></li>
+			<li><span>A firm knock but not one designed to alarm. Knock, knock, knock, as if by a gloved hand, which was the case.</span></li>
+			<li><span>Jimmy knew it was the soldiers. He had seen them walking along the road, past the troop carriers, six of them in uniform, carrying guns.</span></li>
+			<li><span>Manuel had passed the fish on his way up the road. It was eighteen to twenty inches long and its silvery scales were covered with dirt.</span></li>
+		    </ul>
+		</div>
+		
+	    </div>
+	    
+        </div>
+        
+        <div id="footer">
+            <p>Made by <a href="#">Adrian Kokobobo</a> and <a href="#">Robert Coker</a>.</p>
+            <p>Powered by <a href="#">nodejs</a>, <a href="#">MongoDB</a>, and <a href="#">jQuery</a>. Hosted at <a href="#">Linode</a>.</p>
+        </div>
+        
+    </div>
+    
+    <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="js/core.js"></script>
+    <script type="text/javascript" src="js/story.js"></script>
+    <script type="text/javascript" src="js/story-room.js"></script>
+</body>
+</html>

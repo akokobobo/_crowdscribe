@@ -1,0 +1,14 @@
+/*******************
+ *Resets
+ */
+table, body, td, tr, thead, tbody, tfoot { margin: 0; padding: 0; border-collapse: collapse; }
+
+
+table.browse { border: 1px solid black; width: 100%; }
+table.browse td { border-right: 1px solid black; padding: 2px 10px; }
+table.browse td.name { width: 55%; }
+table.browse td.players { width: 25%; }
+table.browse td.action { border: none; width: 20%; }
+table.browse tbody tr.template { display: none; }
+
+form#create-story * { display: block; width: 300px; }
