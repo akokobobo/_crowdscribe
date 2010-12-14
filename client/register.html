@@ -9,35 +9,43 @@
     <div id="container">
         
         <div id="header">
-            <a href="#">Crowd Scribe<span>A Real-Time Collaborative Story Game</span></a>
-	    <ul id="nav">
-		<li><a href="index.html">Home</a></li>
-		<li><a href="new.html">Start a Story</a></li>
-		<li><a href="browse.html">Join a Story</a></li>
-		<li><a href="register.html">Register</a></li>
-		<li><a href="login.html">Login</a></li>
-	    </ul>
+           <h1>Crowd Scribe<span> A Real-Time Collaborative Story Game</span></h1>
+			<ul id="nav">
+				<li><a href="index.html">Home</a></li>
+				<li><a href="new.html">Start a Story</a></li>
+				<li><a href="browse.html">Join a Story</a></li>
+				<li><a href="register.html">Register</a></li>
+				<li><a href="login.html">Login</a></li>
+			</ul>
         </div>
         
         <div id="content" class="register">
-            <h1>Create an Account</h1>
-		    <form name="register" action="">
+            <h2>Create an Account</h2>
+		    <form class="register account" name="register" action="">
 				<div class="error" style="color: red;">
 				</div>
 				<fieldset>
 				    <legend>Register</legend>
 				    <ol>
 					<li>
-					    <label for="email">Email *</label><input type="text" name="email" id="email" />
+					    <label for="email">E-mail *</label>
+						<input type="text" name="email" id="email" />
+						<span class="msg"></span>
 					</li>
 					<li>
-					    <label for="username">Username</label><input type="text" name="username" id="username" />
+					    <label for="username">Username</label>
+						<input type="text" name="username" id="username" />
+						<span class="msg"></span>
 					</li>
 					<li>
-					    <label for="password">Password *</label><input type="password" name="password" id="password" />
+					    <label for="password">Password *<span class="hint">6-36 charaters</label>
+						<input type="password" name="password" id="password" />
+						<span class="msg"></span>
 					</li>
 					<li>
-					    <label for="confirm_password">Confirm Password</label><input type="password" name="confirm_password" id="confirm_password" />
+					    <label for="confirm_password">Confirm Password</label>
+						<input type="password" name="confirm_password" id="confirm_password" />
+						<span class="msg"></span>
 					</li>
 					<li>
 					    <button type="submit">Create Account</button>
@@ -56,6 +64,7 @@
     
     <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
     <script type="text/javascript" src="js/core.js"></script>
-    <script type="text/javascript" src="js/player.js"></script>
+    <script type="text/javascript" src="js/account.js"></script>
+    <!--<script type="text/javascript" src="js/player.js"></script>-->
 </body>
 </html>
