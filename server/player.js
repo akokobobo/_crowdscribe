@@ -12,19 +12,21 @@ var players_online_by_username = {};
 
 this.create = function(name, password, email, fb_id) {
 	//this will create, validate, save and login a player
-	
-	if(
-		!is_player_name_valid(name) || 
-		!is_email_valid(email) ||
-		!is_password_valid(password)
-	) return false;
-
-	//the created player will be returned
-	var p = Player({name:name, password:password, email:email, fb_id:fb_id});
-	
-	if(p.save()) { set_status_online(p); return p; }
-	
-	return false;
+	var response = null;
+    if(!is_email_valid(params.email))
+        response = service.fail(service.INVALID_EMAIL, 'Invalid email.');
+    else if(!is_password_valid(params.password))
+        response = service.fail(service.INVALID_PASSWORD, 'Invalid password.');
+    else if(is_email_taken(params.email))
+        response = service.fail(service.EMAIL_TAKEN, 'That email is taken.');
+    else {
+		if(
+			Player({name:name, password:password, email:email, fb_id:fb_id})
+				.save()
+		) response = service.success('created');
+	}
+    
+	return response;
 }
 
 this.find_by_email = function(email) {
@@ -78,6 +80,13 @@ this.facebook_login = function(fbCookie) {
 }
 
 //private methods
+function is_email_taken(email) {
+	if(players_online_by_email[email] /* || find_by_email(email)*/)
+		return true;
+	else
+		return false;
+}
+
 function set_status_online(player) {
 	//will put this player into the online list.
 	players_online_by_id[player.id()] = player;

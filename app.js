@@ -130,27 +130,8 @@ app.get('/player/login', function(req, res, params) {
  * 
  */
 app.get('/player/register', function(req, res) {
-    /**
-     *  check logged in players and query the database to see if any user exists with such email or name.
-     */
-    var params = req.query;
-    var created = false;
-    if(!Player.exists(params.email))
-        created = Player.create(params.username, params.password, params.email, params.facebook_id || '');
     
-    //set auth cookie
-    if(created) {
-        writeCookie(res, created);
-        res.end("true");
-    } else res.send("false");
 });
-
-function writeCookie(res, player) {
-    var cookie = 'login=';
-    cookie += (JSON.stringify({id: player.id() , session: player.session()}) + ';expires=2 Aug 2400 20:47:11 UTC; path=/');
-    sys.log(cookie);
-    res.writeHead(200, {"Set-Cookie": cookie});
-}
 
 app.get('/player/info', function(req, res, params) {
     //get the auth cookie

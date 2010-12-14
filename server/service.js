@@ -2,8 +2,8 @@ this.success = function(response_object) {
     return JSON.stringify({message: response_object, error: null});
 }
 
-this.fail = function(message, error_code) {
-    return JSON.stringify({message: message, error: error_code});
+this.fail = function(error_code, message) {
+    return JSON.stringify({message: message || '', error: error_code});
 }
 
 this.EMAIL_TAKEN = -1;
