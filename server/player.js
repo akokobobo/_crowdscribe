@@ -1,12 +1,14 @@
 var querystring = require('querystring');
 var md5 = require('./md5');
 var sys = require('sys');
+var service = require('./service');
 
 var SALT = '15f19e6d2c497ab70ff283964093eb52';
 //players online
 var players_online_by_id = {};
 var players_online_by_session = {};
 var players_online_by_email = {};
+var players_online_by_username = {};
 
 this.create = function(name, password, email, fb_id) {
 	//this will create, validate, save and login a player
@@ -23,6 +25,14 @@ this.create = function(name, password, email, fb_id) {
 	if(p.save()) { set_status_online(p); return p; }
 	
 	return false;
+}
+
+this.find_by_email = function(email) {
+	if()
+}
+
+this.find_by_username = function() {
+	
 }
 
 this.exists = function(email) {

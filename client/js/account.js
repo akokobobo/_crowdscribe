@@ -5,9 +5,18 @@
      * Submits the registration form
      */
     CS.account.register_frm = function() {
-        for(var filed in validate)
-            if(!validate[i]()) return false;
-        return true;
+        var is_form_valid = true;
+        for(var field in validate)
+            if(!validate[field]()) is_form_valid = false;
+            
+        if(is_form_valid == false) return false;
+        
+        console.log($(this).serialize());
+        $.get('/player/register', $(this).serialize(), function(){
+            console.log(arguments)
+        });
+        
+        return false;
     }
     
     CS.account.login_frm = function() {

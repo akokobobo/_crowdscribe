@@ -9,6 +9,8 @@ var express = require('express');
 var app = express.createServer();
 var connect = require('connect');
 
+var service = require('./server/service');
+
 
 app.configure(function() {
    app.use(connect.staticProvider(__dirname + '/client'));
@@ -122,7 +124,15 @@ app.get('/player/login', function(req, res, params) {
     } else res.send("false");
 });
 
+/**
+ * Registers a new player and logs them in automatically.
+ * @returns {Service} success or error messages. email is taken/invalid -1/-2, username is taken/invalid -3/-4, invalid password-5
+ * 
+ */
 app.get('/player/register', function(req, res) {
+    /**
+     *  check logged in players and query the database to see if any user exists with such email or name.
+     */
     var params = req.query;
     var created = false;
     if(!Player.exists(params.email))
