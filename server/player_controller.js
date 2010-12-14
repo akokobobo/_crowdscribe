@@ -7,8 +7,7 @@ this.register = function(res, req) {
      *  check logged in players and query the database to see if any user exists with such email or name.
      */
     var params = req.query;
-    var response = null;
-    var player = null;
+    
     //set auth cookie
     if(created) {
         writeCookie(res, created);

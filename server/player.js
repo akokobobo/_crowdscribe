@@ -11,7 +11,6 @@ var players_online_by_email = {};
 var players_online_by_username = {};
 
 this.create = function(name, password, email, fb_id) {
-	//this will create, validate, save and login a player
 	var response = null;
     if(!is_email_valid(params.email))
         response = service.fail(service.INVALID_EMAIL, 'Invalid email.');
@@ -20,17 +19,18 @@ this.create = function(name, password, email, fb_id) {
     else if(is_email_taken(params.email))
         response = service.fail(service.EMAIL_TAKEN, 'That email is taken.');
     else {
-		if(
-			Player({name:name, password:password, email:email, fb_id:fb_id})
-				.save()
-		) response = service.success('created');
+		var player = Player({name:name, password:password, email:email, fb_id:fb_id});
+		if(player.save()) {
+			response = service.success('created');
+			
+		}
 	}
     
 	return response;
 }
 
 this.find_by_email = function(email) {
-	if()
+	return players_online_by_email[email];
 }
 
 this.find_by_username = function() {
