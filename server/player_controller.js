@@ -2,17 +2,19 @@ var service = require("./service");
 var Player = require("./player.js");
 
 this.register = function(res, req) {
-    
-    /**
-     *  check logged in players and query the database to see if any user exists with such email or name.
-     */
     var params = req.query;
     
+    var new_player = Player.create({
+	email: params.email,
+	username: params.username,
+	password: params.password
+    });
+    
     //set auth cookie
-    if(created) {
-        writeCookie(res, created);
-        res.end("true");
-    } else res.send("false");
+    if(new_player.player != null)
+        writeCookie(res, new_player.player);
+	
+    res.send(new_player.response);
 }
 
 
@@ -30,6 +32,5 @@ function is_password_valid(password) { return (password.length >= 6 && password.
 function writeCookie(res, player) {
     var cookie = 'login=';
     cookie += (JSON.stringify({id: player.id() , session: player.session()}) + ';expires=2 Aug 2400 20:47:11 UTC; path=/');
-    sys.log(cookie);
     res.writeHead(200, {"Set-Cookie": cookie});
 }

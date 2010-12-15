@@ -2,6 +2,7 @@ var querystring = require('querystring');
 var md5 = require('./md5');
 var sys = require('sys');
 var service = require('./service');
+var database = require('./db');
 
 var SALT = '15f19e6d2c497ab70ff283964093eb52';
 //players online
@@ -10,8 +11,9 @@ var players_online_by_session = {};
 var players_online_by_email = {};
 var players_online_by_username = {};
 
-this.create = function(name, password, email, fb_id) {
+this.create = function(name, password, email) {
 	var response = null;
+	var player = null;
     if(!is_email_valid(params.email))
         response = service.fail(service.INVALID_EMAIL, 'Invalid email.');
     else if(!is_password_valid(params.password))
@@ -19,18 +21,23 @@ this.create = function(name, password, email, fb_id) {
     else if(is_email_taken(params.email))
         response = service.fail(service.EMAIL_TAKEN, 'That email is taken.');
     else {
-		var player = Player({name:name, password:password, email:email, fb_id:fb_id});
+		player = Player({name:name, password:password, email:email, fb_id:null});
 		if(player.save()) {
-			response = service.success('created');
-			
+			response = service.success(player.player());
 		}
 	}
     
-	return response;
+	return {player: player, response: response};
 }
 
-this.find_by_email = function(email) {
-	return players_online_by_email[email];
+function find_by_email(email, callback) {
+	var player = players_online_by_email[email];
+	if(player) callback(player);
+	else {
+		database.query('select * from users u where u.email = ' + email, function(rows) {
+			sys.puts("row: " + sys.inspect(r));
+		});
+	}
 }
 
 this.find_by_username = function() {
@@ -61,7 +68,6 @@ this.login = function(email, password) {
 	//will validate name and look up the database to find player that name and password matches.
 	
 	var player = players_online_by_email[email];
-	sys.log(email + " " + typeof player);
 	if(player && player.password() == password) return player;
 	else {
 		
