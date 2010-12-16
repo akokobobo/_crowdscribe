@@ -116,13 +116,16 @@ app.get('/stories', function(req, res, params) {
 });
 
 app.get('/player/login', function(req, res, params) {
-    var logged_in = Player.login(req.query.email, req.query.password);
+    var logged_in =
+	PlayerController.login(req.query.email, req.query.password, function(response) {
+	  //set auth cookie
+	  if(response.error == null) {
+		  writeCookie(res, response.message);
+		  res.end(JSON.stringify(response));
+	  } else
+		 res.send(JSON.stringify(response));
+	});
     
-    //set auth cookie
-    if(logged_in) {
-        writeCookie(res, logged_in);
-        res.end("true");
-    } else res.send("false");
 });
 
 /**
@@ -136,9 +139,10 @@ app.get('/player/register', function(req, res) {
 	  if(response.error == null) {//message is the player object just created
 		 writeCookie(res, response.message);
 		 response.message = 'success'; //response is sent back to the client, therefore replacing player objct with a string is good idea.
-	  }
+		 res.end(JSON.stringify(response));
+	  }else
+		 res.send(JSON.stringify(response));
 	  
-	  res.end(JSON.stringify(response));
    });
 });
 

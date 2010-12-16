@@ -5,15 +5,23 @@
      * Submits the registration form
      */
     CS.account.register_frm = function() {
+        $('.general-error').hide();
         var is_form_valid = true;
         for(var field in validate)
             if(!validate[field]()) is_form_valid = false;
             
         if(is_form_valid == false) return false;
         
-        console.log($(this).serialize());
-        $.get('/player/register', $(this).serialize(), function(){
-            console.log(arguments)
+        $.get('/player/register', $(this).serialize(), function(result){
+            if(typeof result == 'string') result = JSON.parse(result);
+            
+            if(result.error == null) location.href = '/browse.html';
+            else if(result.error == -1) {
+                get_form().find('input#email')
+                    .next().html('Your email has been taken')
+                    .parent().addClass('error');
+            }
+            else $('.general-error').show();
         });
         
         return false;

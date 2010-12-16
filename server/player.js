@@ -51,21 +51,21 @@ this.authenticate = function(cookie) {
 	else return false;
 }
 
-this.login = function(email, password) {
-	//will validate name and look up the database to find player that name and password matches.
-	
-	var player = players_online_by_email[email];
-	if(player && player.password() == password) return player;
+this.login = function(email, password, callback) {
+	if(!is_email_valid(email))
+        callback(service.fail(service.INVALID_EMAIL, 'Invalid email.'));
+    else if(!is_password_valid(password))
+        callback(service.fail(service.INVALID_PASSWORD, 'Invalid password.'));
 	else {
-		
-		/*var player = find_by_email(email);
-		if(player.password() == password) {
-			set_status_online(player);
-			return player;
-		}*/
-		return false;
+		find_by_email(email, function(player) {
+			if (player.password() == password) {
+				set_status_online(player);
+				callback(service.success(player));	
+			} else {
+				callback(service.fail(service.FAILED_AUTH, 'Could not authenticate'));
+			}
+		});
 	}
-	return false;
 }
 
 this.facebook_login = function(fbCookie) {
@@ -96,8 +96,8 @@ function find_by_email(email, callback) {
 }
 
 function is_email_taken(email, callback) {
-	find_by_email(email, function(row) {
-		if (row) callback(true);
+	find_by_email(email, function(player) {
+		if (player) callback(true);
 		else callback(false);
 	});
 }
@@ -172,7 +172,6 @@ function Player(o) {
 	function is_active() { return last_activity() < (5).minutes(); }
 	
 	function save(callback) {
-		sys.puts("SAVING....");
 		if(id() == null) insert_player(callback);
 		else update_player(callback)
 	}
@@ -181,13 +180,19 @@ function Player(o) {
 		var query = "INSERT INTO users (email, password, username, facebook_id) VALUES ('" + email() + "', '" + password() + "', '" + name() + "', '" + facebook_id() + "')";
 		sys.puts(query);
 		database.query(query, function(rows) {
-			sys.puts("row: " + sys.inspect(rows));
-			callback('saved');
+			find_by_email(email(), function(player) {
+				if (player.id()) {
+					properties.id = player.id();
+					callback(true);
+				} else
+					callback(false);
+			})
+			
 		});
 	}
 	
 	function update_player(callback) {
-		callback('updated');
+		callback(true);
 	}
 	
 	function public_info() {

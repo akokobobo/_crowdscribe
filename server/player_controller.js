@@ -14,6 +14,10 @@ this.register = function(req, res, callback) {
 	});
 }
 
+this.login = function(email, password, callback) {
+	Player.login(email, password, callback);
+}
+
 
 function is_player_name_valid(username) {
 	return /^[A-Za-z0-9\_\-]+$/.test(username);
