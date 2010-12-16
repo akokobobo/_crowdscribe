@@ -11,44 +11,31 @@ var players_online_by_session = {};
 var players_online_by_email = {};
 var players_online_by_username = {};
 
-this.create = function(name, password, email) {
-	var response = null;
+this.create = function(params, callback) {
 	var player = null;
     if(!is_email_valid(params.email))
-        response = service.fail(service.INVALID_EMAIL, 'Invalid email.');
+        callback(service.fail(service.INVALID_EMAIL, 'Invalid email.'));
     else if(!is_password_valid(params.password))
-        response = service.fail(service.INVALID_PASSWORD, 'Invalid password.');
-    else if(is_email_taken(params.email))
-        response = service.fail(service.EMAIL_TAKEN, 'That email is taken.');
+        callback(service.fail(service.INVALID_PASSWORD, 'Invalid password.'));
     else {
-		player = Player({name:name, password:password, email:email, fb_id:null});
-		if(player.save()) {
-			response = service.success(player.player());
-		}
-	}
-    
-	return {player: player, response: response};
-}
-
-function find_by_email(email, callback) {
-	var player = players_online_by_email[email];
-	if(player) callback(player);
-	else {
-		database.query('select * from users u where u.email = ' + email, function(rows) {
-			sys.puts("row: " + sys.inspect(r));
+		is_email_taken(params.email, function(is_taken) {
+			if(is_taken)
+				callback(service.fail(service.EMAIL_TAKEN, 'That email is taken.'));
+			//create and save the new player
+			else {
+				player = Player({name:params.username, password:params.password, email:params.email, fb_id:null});
+				player.save(function(success) {
+					if(success) callback(service.success(player));
+					else callback(service.fail(service.UNKNOWN_ERROR, 'Something went worng while registering.'));
+				});
+			}
 		});
 	}
+    
 }
 
 this.find_by_username = function() {
 	
-}
-
-this.exists = function(email) {
-	if(players_online_by_email[email] /* || find_by_email(email)*/)
-		return true;
-	else
-		return false;
 }
 
 this.authenticate = function(cookie) {
@@ -86,11 +73,33 @@ this.facebook_login = function(fbCookie) {
 }
 
 //private methods
-function is_email_taken(email) {
-	if(players_online_by_email[email] /* || find_by_email(email)*/)
-		return true;
-	else
-		return false;
+function find_by_email(email, callback) {
+	var player = players_online_by_email[email];
+	if(player) callback(player);
+	else {
+		var query_str = "select * from users u where u.email = '" + email + "'";
+		sys.puts(query_str);
+		database.query(query_str, function(rows) {
+			row = rows.length ? rows[0] : null;
+			if(row) {
+				callback(Player({
+					id: row[0],
+					email: row[1],
+					password: row[2],
+					name: row[3],
+					facebook_id: row[4]
+				}));
+			} else
+				callback(null);
+		});
+	}
+}
+
+function is_email_taken(email, callback) {
+	find_by_email(email, function(row) {
+		if (row) callback(true);
+		else callback(false);
+	});
 }
 
 function set_status_online(player) {
@@ -119,7 +128,7 @@ function is_password_valid(password) { return true; }
 //================================================
 function Player(o) {
 	var properties = {
-		id: null,
+		id: o.id || null,
 		name: o.name || null,
 		email: o.email || null,
 		facebook_id: o.fb_id || null,
@@ -162,9 +171,23 @@ function Player(o) {
 	function update_activity() { last_timer_update = new Date(); }
 	function is_active() { return last_activity() < (5).minutes(); }
 	
-	function save() {
-		properties.id = (new Date().getTime()).toString();
-		return true;
+	function save(callback) {
+		sys.puts("SAVING....");
+		if(id() == null) insert_player(callback);
+		else update_player(callback)
+	}
+	
+	function insert_player(callback) {
+		var query = "INSERT INTO users (email, password, username, facebook_id) VALUES ('" + email() + "', '" + password() + "', '" + name() + "', '" + facebook_id() + "')";
+		sys.puts(query);
+		database.query(query, function(rows) {
+			sys.puts("row: " + sys.inspect(rows));
+			callback('saved');
+		});
+	}
+	
+	function update_player(callback) {
+		callback('updated');
 	}
 	
 	function public_info() {

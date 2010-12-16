@@ -2,6 +2,7 @@ var sys = require('sys');
 require('./server/overloads');
 var md5 = require('./server/md5');
 
+var PlayerController = require('./server/player_controller');
 var Player = require('./server/player');
 var Story = require('./server/story');
 
@@ -130,7 +131,15 @@ app.get('/player/login', function(req, res, params) {
  * 
  */
 app.get('/player/register', function(req, res) {
-    
+   PlayerController.register(req, res, function(response) {
+	  //set auth cookie
+	  if(response.error == null) {//message is the player object just created
+		 writeCookie(res, response.message);
+		 response.message = 'success'; //response is sent back to the client, therefore replacing player objct with a string is good idea.
+	  }
+	  
+	  res.end(JSON.stringify(response));
+   });
 });
 
 app.get('/player/info', function(req, res, params) {
@@ -154,6 +163,13 @@ app.get('/player/:id/info', function(req, res, params) {
     } else res.end('you cant have it');
 });
 
+
+
+function writeCookie(res, player) {
+    var cookie = 'login=';
+    cookie += (JSON.stringify({id: player.id() , session: player.session()}) + ';expires=2 Aug 2400 20:47:11 UTC; path=/');
+    res.writeHead(200, {"Set-Cookie": cookie});
+}
 
 sys.log("Starting server on port 8000.");
 app.listen(3000);
