@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Join a Story - Crowd Scribe - A Real-Time Collaborative Story Game</title>
+    <title></title>
     <link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="css/default.css" type="text/css" media="screen" />
 </head>
@@ -53,5 +53,77 @@
     <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
     <script type="text/javascript" src="js/core.js"></script>
     <script type="text/javascript" src="js/story.js"></script>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Join a Story - Crowd Scribe - A Real-Time Collaborative Story Game</title>
+    <link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/default.css" type="text/css" media="screen" />
+</head>
+<body>
+    <div id="container">
+        
+        <div id="header">
+           <h1>Crowd Scribe<span> A Real-Time Collaborative Story Game</span></h1>
+			<ul id="nav">
+				<li><a href="index.html">Home</a></li>
+				<li><a href="new.html">Start a Story</a></li>
+				<li><a href="browse.html">Join a Story</a></li>
+				<li><a href="register.html">Register</a></li>
+				<li><a href="login.html">Login</a></li>
+			</ul>
+        </div>
+        
+        <div id="content" class="register">
+            <h2>Create an Account</h2>
+		    <form class="register account" name="register" action="">
+				<p class="general-error" style="color: red; display: none;">Could not created your account. Please try again.</p>
+				<fieldset>
+				    <legend>Register</legend>
+				    <ol>
+					<li>
+					    <label for="email">E-mail *</label>
+						<input type="text" name="email" id="email" />
+						<span class="msg"></span>
+					</li>
+					<li>
+					    <label for="username">Username</label>
+						<input type="text" name="username" id="username" />
+						<span class="msg"></span>
+					</li>
+					<li>
+					    <label for="password">Password *<span class="hint">6-36 charaters</label>
+						<input type="password" name="password" id="password" />
+						<span class="msg"></span>
+					</li>
+					<li>
+					    <label for="confirm_password">Confirm Password</label>
+						<input type="password" name="confirm_password" id="confirm_password" />
+						<span class="msg"></span>
+					</li>
+					<li>
+					    <button type="submit">Create Account</button>
+					</li>
+				    </ol>
+				</fieldset>
+		    </form>
+        </div>
+        
+        <div id="footer">
+            <p>Made by <a href="#">Adrian Kokobobo</a> and <a href="#">Robert Coker</a>.</p>
+            <p>Powered by <a href="#">nodejs</a>, <a href="#">MongoDB</a>, and <a href="#">jQuery</a>. Hosted at <a href="#">Linode</a>.</p>
+        </div>
+        
+    </div>
+    
+    <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="js/core.js"></script>
+    <script type="text/javascript" src="js/account.js"></script>
+    <script type="text/javascript" src="js/json2.js"></script>
+    <!--<script type="text/javascript" src="js/player.js"></script>-->
 </body>
 </html>
